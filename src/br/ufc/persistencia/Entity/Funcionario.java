@@ -7,6 +7,7 @@ public abstract class Funcionario {
 	private String cpf;
 	private String nome;
 	private Endereco endereco;
+	private String tipo;
 	private String sexo;
 	private String dataNascimento;
 	private double salario;
@@ -17,12 +18,14 @@ public abstract class Funcionario {
 	public Funcionario() {}
 	
 	public Funcionario(String cpf, String nome, Endereco endereco, String sexo, String dataNascimento, 
-		double salario, Departamento departamento){
+		double salario, String tipo, Departamento departamento){
+		this.cpf = cpf;
 		this.nome = nome;
 		this.endereco = endereco;
 		this.sexo = sexo;
 		this.dataNascimento = dataNascimento;
 		this.salario = salario;
+		this.tipo = tipo;
 		this.departamento = departamento;
 		this.dependentes = new ArrayList<>();
 
@@ -91,5 +94,13 @@ public abstract class Funcionario {
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 }

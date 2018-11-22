@@ -9,7 +9,7 @@ public class Secretario extends Funcionario {
 			double salario, Departamento departamento,
 			String grau){
 		
-		super(cpf, nome, endereco, sexo, dataNascimento, salario, departamento);
+		super(cpf, nome, endereco, sexo, dataNascimento, salario, "Secretario",departamento);
 		this.grau = grau;
 	}
 	

@@ -13,7 +13,7 @@ public class Limpeza extends Funcionario {
 			double salario, Departamento departamento,
 			String cargo, int jornada, Limpeza supervisor){
 		
-		super(cpf, nome, endereco, sexo, dataNascimento, salario, departamento);
+		super(cpf, nome, endereco, sexo, dataNascimento, salario, "Limpeza", departamento);
 		this.cargo = cargo;
 		this.jornada = jornada;
 		this.supervisor = supervisor;

@@ -24,23 +24,23 @@ public class FuncionarioDao {
 		atributos.put(NOME, funcionario.getNome());
 		atributos.put("sexo", funcionario.getSexo());
 		atributos.put("nascimento", funcionario.getDataNascimento());
+		atributos.put("tipo", funcionario.getTipo());
 		
 		String salario = Double.toString(funcionario.getSalario());
 		atributos.put("salario", salario);
 		atributos.put("departamento", funcionario.getDepartamento().getNome());
 		
-		RedisUtil.getJedis().hmset(FUNCIONARIO + funcionario.getNome(), atributos);
+		RedisUtil.getJedis().hmset(FUNCIONARIO + funcionario.getCpf(), atributos);
 		RedisUtil.getJedis().sadd(FUNCIONARIOS, funcionario.getNome());
 		RedisUtil.getJedis().sadd(DEPARTAMENTO + funcionario.getDepartamento().getNome() + ":"
 									+ FUNCIONARIOS, funcionario.getNome());
-		RedisUtil.salvar();
 	}
 	
 	public void salva(Pesquisador pesquisador) {
 		Map<String, String> atributos = new HashMap<>();
 		salvar(pesquisador);
 		atributos.put("area", pesquisador.getArea());
-		RedisUtil.getJedis().hmset(FUNCIONARIO + pesquisador.getNome(), atributos);
+		RedisUtil.getJedis().hmset(FUNCIONARIO + pesquisador.getCpf(), atributos);
 		RedisUtil.salvar();
 	}
 	
@@ -48,7 +48,7 @@ public class FuncionarioDao {
 		Map<String, String> atributos = new HashMap<>();
 		salvar(secretario);
 		atributos.put("grau", secretario.getGrau());
-		RedisUtil.getJedis().hmset(FUNCIONARIO + secretario.getNome(), atributos);
+		RedisUtil.getJedis().hmset(FUNCIONARIO + secretario.getCpf(), atributos);
 		RedisUtil.salvar();
 	}
 	
@@ -59,31 +59,35 @@ public class FuncionarioDao {
 		
 		String jornada = Integer.toString(limpeza.getJornada());
 		atributos.put("jornada", jornada);
-		RedisUtil.getJedis().hmset(FUNCIONARIO + limpeza.getNome(), atributos);
+		RedisUtil.getJedis().hmset(FUNCIONARIO + limpeza.getCpf(), atributos);
 		RedisUtil.salvar();
 	}
 	
 	
-	public Funcionario buscar(String nome, String tipo) {
+	public Funcionario buscar(String cpf) {
 		
 		FuncionarioFactory factory = new FuncionarioFactory();
 		Funcionario funcionario;
-		Departamento departamento;
-		if (busca(nome)) {
-			funcionario = factory.criaFuncionario(tipo);
+		Departamento departamento = new Departamento();
+		
+		String nome = RedisUtil.getJedis().hget(FUNCIONARIO + cpf, NOME);
+		
+		if (busca(nome)) {	
+			funcionario = factory.criaFuncionario(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "tipo"));
 			departamento = new Departamento();
-			funcionario.setCpf(RedisUtil.getJedis().hget(FUNCIONARIO + nome, "cpf"));
-			funcionario.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + nome, NOME));
-			funcionario.setDataNascimento(RedisUtil.getJedis().hget(FUNCIONARIO + nome, "nascimento"));
-			funcionario.setSexo(RedisUtil.getJedis().hget(FUNCIONARIO + nome, "sexo"));
-			
-			double salario = Double.parseDouble(RedisUtil.getJedis().hget(FUNCIONARIO + nome, "salario"));
+			funcionario.setCpf(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "cpf"));
+			funcionario.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, NOME));
+			funcionario.setDataNascimento(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "nascimento"));
+			funcionario.setSexo(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "sexo"));
+			funcionario.setTipo(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "tipo"));
+			double salario = Double.parseDouble(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "salario"));
 			funcionario.setSalario(salario);
 			
-			departamento.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + nome, "depatamento"));
+			departamento.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "depatamento"));
 			funcionario.setDepartamento(departamento);
 			
 			return funcionario;
+			
 		}
 		return null;
 	}

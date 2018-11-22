@@ -117,12 +117,12 @@ public class FuncionarioView {
 		lblDadosPessoais.setBounds(33, 12, 114, 15);
 		frmFuncionario.getContentPane().add(lblDadosPessoais);
 		
-		JLabel lblId = new JLabel("ID");
+		JLabel lblId = new JLabel("CPF");
 		lblId.setBounds(12, 12, 70, 15);
 		pnlFuncionario.add(lblId);
 		
 		JLabel lblNome = new JLabel("Nome");
-		lblNome.setBounds(94, 12, 70, 15);
+		lblNome.setBounds(178, 12, 70, 15);
 		pnlFuncionario.add(lblNome);
 		
 		JLabel lblEndereco = new JLabel("Endereco");
@@ -199,14 +199,14 @@ public class FuncionarioView {
 		
 		txtCpf = new JTextField();
 		txtCpf.addKeyListener(fieldInteger);
-		txtCpf.setBounds(13, 29, 70, 19);
+		txtCpf.setBounds(13, 29, 151, 19);
 		pnlFuncionario.add(txtCpf);
 		txtCpf.setColumns(10);		
 		
 		//FieldTexts
 		txtNome = new JTextField();
 		txtNome.addKeyListener(stringField);
-		txtNome.setBounds(94, 30, 403, 19);
+		txtNome.setBounds(176, 30, 321, 19);
 		pnlFuncionario.add(txtNome);
 		txtNome.setColumns(10);
 		
@@ -270,9 +270,6 @@ public class FuncionarioView {
 		boxFuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				switch (boxFuncionario.getSelectedItem().toString()) {
-				case "Funcionario":
-					disableCampos();
-					break;
 				case "Pesquisador":
 					enablePesquisador();
 					disableSecretario();
@@ -293,7 +290,7 @@ public class FuncionarioView {
 				}
 			}
 		});
-		boxFuncionario.setModel(new DefaultComboBoxModel<String>(new String[] {"Funcionario", "Pesquisador", "Secretario", "Limpeza"}));
+		boxFuncionario.setModel(new DefaultComboBoxModel<String>(new String[] {"Pesquisador", "Secretario", "Limpeza"}));
 		
 		txtArea = new JTextField();
 		txtArea.addKeyListener(stringField);
@@ -356,10 +353,6 @@ public class FuncionarioView {
 					String nomeDepartamento = cmbBxDepartamento.getSelectedItem().toString();
 					Departamento departamento = depDAO.buscar(nomeDepartamento);
 										
-//					endDAO.beginTransaction();
-//					endDAO.save(end);
-//					endDAO.commit();
-					
 					if (tipo.equals("Pesquisador")) {
 						Pesquisador pesquisador = new Pesquisador(cpf, nome, endereco, sexo, 
 								dataNasc, salario, departamento, area);
@@ -368,7 +361,7 @@ public class FuncionarioView {
 						Secretario secretario = new Secretario(cpf, nome, endereco, sexo, 
 										dataNasc, salario, departamento, grau);
 						funcDAO.salva(secretario);
-					} else if (tipo.equals("Secretario")) {
+					} else if (tipo.equals("Limpeza")) {
 						Limpeza limpeza = new Limpeza(cpf, nome, endereco, sexo, dataNasc, 
 											salario, departamento, cargo, jornada, null);
 						funcDAO.salva(limpeza);
@@ -403,35 +396,36 @@ public class FuncionarioView {
 				
 				if (!txtCpf.getText().equals("")) {
 					String cpf = txtCpf.getText();
-					String tipo = boxFuncionario.getSelectedItem().toString();
-					funcionario = funcDAO.buscar(cpf, tipo);
-				}
-				
-				if (funcionario == null) {
-					JOptionPane.showMessageDialog(null, "Funcionario não encontrado");
-					txtCpf.setText("");
-				} else {
-					txtCpf.setText(funcionario.getCpf());
-					txtNome.setText(funcionario.getNome());
+					funcionario = funcDAO.buscar(cpf);
 					
-					Endereco end = funcionario.getEndereco();
-					txtEndereco.setText(end.getRua());
-					txtNumero.setText(String.valueOf(end.getNumero()));
-					txtBairro.setText(end.getBairro());
-					txtCidade.setText(end.getCidade());
-					boxEstado.setSelectedItem(end.getCidade());
-				
-					txtDataNascimento.setText(funcionario.getDataNascimento());							
-					txtSalario.setText(String.valueOf(funcionario.getSalario()));
-					boxSexo.setSelectedItem(funcionario.getSexo());
-											
-					Departamento dep = funcionario.getDepartamento();
-					if (dep != null) {
-						cmbBxDepartamento.setSelectedItem(dep.getNome());
+					if (funcionario == null) {
+						JOptionPane.showMessageDialog(null, "Funcionario não encontrado");
+						txtCpf.setText("");
+					} else {
+						txtCpf.setText(funcionario.getCpf());
+						txtNome.setText(funcionario.getNome());
+						
+//						Endereco end = funcionario.getEndereco();
+//						txtEndereco.setText(end.getRua());
+//						txtNumero.setText(String.valueOf(end.getNumero()));
+//						txtBairro.setText(end.getBairro());
+//						txtCidade.setText(end.getCidade());
+//						boxEstado.setSelectedItem(end.getCidade());
+					
+						txtDataNascimento.setText(funcionario.getDataNascimento());							
+						txtSalario.setText(String.valueOf(funcionario.getSalario()));
+						boxSexo.setSelectedItem(funcionario.getSexo());
+						boxFuncionario.setSelectedItem(funcionario.getTipo());
+						
+						Departamento dep = funcionario.getDepartamento();
+						if (dep != null) {
+							cmbBxDepartamento.setSelectedItem(dep.getNome());
+						}
+						
 					}
-					
-				}
 				
+				}
+			
 			}
 		});
 		btnBuscar.setBounds(211, 458, 117, 25);

@@ -8,7 +8,7 @@ public class Pesquisador extends Funcionario {
 	public Pesquisador(String cpf, String nome, Endereco endereco, String sexo, String dataNascimento, 
 										double salario, Departamento departamento, 
 										String area){
-		super(cpf, nome, endereco, sexo, dataNascimento, salario, departamento);
+		super(cpf, nome, endereco, sexo, dataNascimento, salario, "Pesquisador", departamento);
 		this.area = area;
 	}
 	
