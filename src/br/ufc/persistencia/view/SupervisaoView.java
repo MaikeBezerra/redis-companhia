@@ -1,11 +1,10 @@
-package br.ufc.qxd.persistencia.view;
+package br.ufc.persistencia.view;
 
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.persistence.NoResultException;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,10 +15,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
 
-import br.ufc.qxd.persistencia.bean.Limpeza;
-import br.ufc.qxd.persistencia.dao.impl.LimpezaJPADAO;
-import br.ufc.qxd.persistencia.view.field.FieldInteger;
-import br.ufc.qxd.persistencia.view.field.StringField;
+import br.ufc.persistencia.Entity.Limpeza;
+import br.ufc.persistencia.dao.FuncionarioDao;
+import br.ufc.persistencia.view.field.FieldInteger;
+import br.ufc.persistencia.view.field.StringField;
 
 public class SupervisaoView {
 
@@ -29,12 +28,12 @@ public class SupervisaoView {
 	private JFrame frame;
 	private JPanel panel;
 	private JLabel lbId;
-	private JTextField txtId;
+	private JTextField txtCpf;
 	private JLabel lbNome;
 	private JTextField txtNome;
 	private JLabel lblSupervisor;
 	private JList<String> list;
-	private JTextField txtIdSurp;
+	private JTextField txtCpfSurp;
 	private JTextField txtNomeSurp;
 
 	/**
@@ -68,7 +67,7 @@ public class SupervisaoView {
 		FieldInteger integer = new FieldInteger();
 		StringField string = new StringField();
 		
-		LimpezaJPADAO funcDAO = new LimpezaJPADAO();
+		FuncionarioDao funcDAO = new FuncionarioDao();
 		
 		
 		frame = new JFrame();
@@ -90,11 +89,11 @@ public class SupervisaoView {
 		lbNome.setBounds(94, 12, 70, 15);
 		panel.add(lbNome);
 		
-		txtId = new JTextField();
-		txtId.addKeyListener(integer);
-		txtId.setColumns(10);
-		txtId.setBounds(13, 29, 70, 19);
-		panel.add(txtId);
+		txtCpf = new JTextField();
+		txtCpf.addKeyListener(integer);
+		txtCpf.setColumns(10);
+		txtCpf.setBounds(13, 29, 70, 19);
+		panel.add(txtCpf);
 		
 		txtNome = new JTextField();
 		txtNome.addKeyListener(string);
@@ -112,24 +111,19 @@ public class SupervisaoView {
 			public void actionPerformed(ActionEvent evt) {
 				
 				try {
-					if (!txtId.getText().equals("")) {
-						int id = Integer.parseInt(txtId.getText());
-						supervisor = funcDAO.find(id);
-					} else if (!txtNome.getText().equals("")) {
-						supervisor = funcDAO.findByName(txtNome.getText());
-					} 
-					
-					if (supervisor == null) {
-						JOptionPane.showMessageDialog(null, "Supervisor não encontrado");
-						txtId.setText("");
-						txtNome.setText("");
-						list.setListData(new String[0]);
-					} else {
-						txtId.setText(Integer.toString(supervisor.getId()));
-						txtNome.setText(supervisor.getNome());
-						list.setListData(funcDAO.supervisionadosGetNames(supervisor));
+					if (!txtCpf.getText().equals("")) {
+						supervisor = funcDAO.buscarLimpeza(txtCpf.getText());
+						if (supervisor == null) {
+							JOptionPane.showMessageDialog(null, "Supervisor não encontrado");
+							txtCpf.setText("");
+							list.setListData(new String[0]);
+						} else {
+							//txtCpf.setText(supervisor.getCpf());
+							txtNome.setText(supervisor.getNome());
+							list.setListData(funcDAO.superviosionados(supervisor.getNome()));
+						}
 					}
-				} catch (NoResultException e1) {
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "Supervisor não encontrado!");
 				}
 			}
@@ -161,10 +155,10 @@ public class SupervisaoView {
 		label_1.setBounds(94, 12, 70, 15);
 		panel_1.add(label_1);
 		
-		txtIdSurp = new JTextField();
-		txtIdSurp.setColumns(10);
-		txtIdSurp.setBounds(13, 29, 70, 19);
-		panel_1.add(txtIdSurp);
+		txtCpfSurp = new JTextField();
+		txtCpfSurp.setColumns(10);
+		txtCpfSurp.setBounds(13, 29, 70, 19);
+		panel_1.add(txtCpfSurp);
 		
 		txtNomeSurp = new JTextField();
 		txtNomeSurp.setColumns(10);
@@ -176,22 +170,17 @@ public class SupervisaoView {
 		btnBuscaSupervionado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					if (!txtIdSurp.getText().equals("")) {
-						int id = Integer.parseInt(txtIdSurp.getText());
-						supervisionado = funcDAO.find(id);
-					} else if (!txtNomeSurp.getText().equals("")) {
-						supervisionado = funcDAO.findByName(txtNomeSurp.getText());
-					} 
-					
-					if (supervisionado == null) {
-						JOptionPane.showMessageDialog(null, "Supervisionado não encontrado");
-						txtIdSurp.setText("");
-						txtNomeSurp.setText("");
-					} else {
-						txtIdSurp.setText(Integer.toString(supervisionado.getId()));
-						txtNomeSurp.setText(supervisionado.getNome());
+					if (!txtCpfSurp.getText().equals("")) {
+						supervisionado = funcDAO.buscarLimpeza(txtCpfSurp.getText());
+						if (supervisionado == null) {
+							JOptionPane.showMessageDialog(null, "Supervisionado não encontrado");
+							txtCpfSurp.setText("");
+						} else {
+							//txtCpfSurp.setText(supervisionado.getCpf());
+							txtNomeSurp.setText(supervisionado.getNome());
+						}
 					}
-				} catch (NoResultException e1) {
+				} catch (Exception e1) {
 					JOptionPane.showMessageDialog(null, "Supervisionado não encontrado!");
 				}
 			}
@@ -204,14 +193,8 @@ public class SupervisaoView {
 			public void actionPerformed(ActionEvent e) {
 				if (supervisionado != null && supervisor != null
 											&& supervisionado != supervisor) {
-					
-					supervisionado.setSupervisor(supervisor);
-					funcDAO.beginTransaction();
-					funcDAO.save(supervisionado);
-					funcDAO.commit();
-					funcDAO.close();
-				}
-				
+					funcDAO.supervisao(supervisor.getNome(), supervisionado.getNome());
+				}	
 			}
 		});
 		btnNovo.setIcon(new ImageIcon("./images/icons/plus (2).png"));
@@ -223,14 +206,8 @@ public class SupervisaoView {
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String nome = list.getSelectedValue().toString();
-				if (!list.isSelectionEmpty()) {
-					Limpeza func = funcDAO.findByName(nome);
-					
-					func.setSupervisor(null);
-					funcDAO.beginTransaction();
-					funcDAO.save(func);
-					funcDAO.commit();
-					funcDAO.close();
+				if (supervisor != null && !list.isSelectionEmpty()) {
+					funcDAO.removeSupervisao(supervisor.getNome(), nome);
 				}
 			}
 		});

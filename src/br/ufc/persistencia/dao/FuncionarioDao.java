@@ -2,6 +2,7 @@ package br.ufc.persistencia.dao;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import br.ufc.persistencia.Entity.Departamento;
 import br.ufc.persistencia.Entity.Funcionario;
@@ -15,6 +16,8 @@ public class FuncionarioDao {
 	public static final String DEPARTAMENTO = "departamento:";
 	public static final String FUNCIONARIO = "funcionario:";
 	public static final String FUNCIONARIOS = "funcionarios";
+	public static final String SUPERVISOR = "supervisor:";
+	public static final String SUPERVISIONADOS = "supervisionados";
 	public static final String NOME = "nome";
 	
 	
@@ -69,7 +72,7 @@ public class FuncionarioDao {
 		
 		FuncionarioFactory factory = new FuncionarioFactory();
 		Funcionario funcionario;
-		Departamento departamento = new Departamento();
+		Departamento departamento;
 		
 		String nome = RedisUtil.getJedis().hget(FUNCIONARIO + cpf, NOME);
 		if (nome != null && !nome.equals("") ) {
@@ -95,9 +98,70 @@ public class FuncionarioDao {
 		return null;
 	}
 	
+	public Limpeza buscarLimpeza(String cpf) {
+		
+		Limpeza funcionario = new Limpeza();
+		Departamento departamento;
+		
+		String nome = RedisUtil.getJedis().hget(FUNCIONARIO + cpf, NOME);
+		String tipo = RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "tipo");
+		if (nome != null && !nome.equals("") ) {
+			if (buscaTipo(tipo, nome)) {	
+				departamento = new Departamento();
+				funcionario.setCpf(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "cpf"));
+				funcionario.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, NOME));
+				funcionario.setDataNascimento(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "nascimento"));
+				funcionario.setSexo(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "sexo"));
+				funcionario.setTipo(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "tipo"));
+				double salario = Double.parseDouble(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "salario"));
+				funcionario.setSalario(salario);
+				
+				departamento.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "depatamento"));
+				funcionario.setDepartamento(departamento);
+				
+				return funcionario;
+				
+			}
+		}	
+			
+		return null;
+	}
+	
+	public void supervisao(String supervisor, String supervisionado) {
+		
+		RedisUtil.getJedis().sadd(SUPERVISOR + supervisor + ":"
+				+ SUPERVISIONADOS, supervisionado);
+		RedisUtil.salvar();
+	}
+	
+	public void removeSupervisao(String supervisor, String supervisionado) {
+		RedisUtil.getJedis().srem(SUPERVISOR + supervisor + ":"
+				+ SUPERVISIONADOS, supervisionado);
+		RedisUtil.salvar();
+	}
+	
+	public String[] superviosionados(String supervisor) {
+		Set<String> supervisionados = RedisUtil.getJedis().smembers(SUPERVISOR + supervisor + ":"
+				+ SUPERVISIONADOS);
+		String[] supervisionado = new String[supervisionados.size()];
+		
+		int cont = 0;
+		for (String string : supervisionados) {
+			supervisionado[cont] = string;
+			cont++;
+		}
+		return supervisionado;
+	}
+	
 	public boolean busca(String nome) {
 		return RedisUtil.getJedis().sismember(FUNCIONARIOS, nome);
 	}
+	
+	public boolean buscaTipo(String tipo, String nome) {
+		return RedisUtil.getJedis().sismember(tipo, nome);
+	}
+	
+	
 	
 	public void delete(String nome) {
 		if (busca(nome)) {
