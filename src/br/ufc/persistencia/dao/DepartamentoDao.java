@@ -17,7 +17,6 @@ public class DepartamentoDao {
 		Map<String, String> atributos = new HashMap<>();
 		atributos.put(NOME, departamento.getNome());
 		
-		//RedisUtil.getJedis().hmset(DEPARTAMENTO + departamento.getNome(), atributos);
 		RedisUtil.getJedis().sadd(DEPARTAMENTOS, departamento.getNome());
 		RedisUtil.salvar();
 	}

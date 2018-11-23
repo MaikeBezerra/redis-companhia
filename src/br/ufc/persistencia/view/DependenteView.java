@@ -3,11 +3,7 @@ package br.ufc.persistencia.view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
-import javax.persistence.NoResultException;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,10 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.BevelBorder;
 
-import br.ufc.qxd.persistencia.bean.Dependente;
-import br.ufc.qxd.persistencia.bean.Funcionario;
-import br.ufc.qxd.persistencia.dao.impl.DependenteJPADAO;
-import br.ufc.qxd.persistencia.dao.impl.FuncionarioJPADAO;
+import br.ufc.persistencia.Entity.Dependente;
+import br.ufc.persistencia.Entity.Funcionario;
+import br.ufc.persistencia.dao.DependenteDao;
+import br.ufc.persistencia.dao.FuncionarioDao;
 
 public class DependenteView {
 	
@@ -33,6 +29,8 @@ public class DependenteView {
 	private JTextField txtNome;
 	private JTextField txtDataNascimento;
 	private JTextField txtParentesco;
+	private Funcionario funcionario;
+	private Dependente dependente;
 	
 	/**
 	 * Launch the application.
@@ -62,6 +60,10 @@ public class DependenteView {
 	 */
 	private void initialize() {
 
+		FuncionarioDao funcionarioDao = new FuncionarioDao();
+		DependenteDao dependenteDao = new DependenteDao();
+		
+		
 		frmDependentes = new JFrame();
 		frmDependentes.setTitle("Dependentes");
 		frmDependentes.setBounds(100, 100, 514, 431);
@@ -136,16 +138,22 @@ public class DependenteView {
 		frmDependentes.getContentPane().add(txtNomeFunc);
 		txtNomeFunc.setColumns(10);
 		
-		JList<String> list = new JList<String>();
-		list.setBounds(54, 111, 425, 108);
-		frmDependentes.getContentPane().add(list);
+		JList<String> listDependentes = new JList<String>();
+		listDependentes.setBounds(54, 111, 425, 108);
+		frmDependentes.getContentPane().add(listDependentes);
 		
 		JButton btnBuscar = new JButton("");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				
-					 
-					
+				if (!txtId.getText().equals("")) {
+					funcionario = funcionarioDao.buscar(txtId.getText());
+					if (funcionario != null) {
+						txtNomeFunc.setText(funcionario.getNome());
+						listDependentes.setListData(dependenteDao.dependentes(funcionario.getNome()));
+					} else 
+						JOptionPane.showMessageDialog(null, "Funcionario não encontrado");
+				} 
+					 	
 			}
 		});
 		btnBuscar.setIcon(new ImageIcon("./images/icons/magnifier (1).png"));
@@ -159,59 +167,32 @@ public class DependenteView {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (funcionario != null) {
-					char sexo;
-					if (boxSexo.getSelectedItem().equals("M")) {
-						sexo = 'M';
-					} else
-						sexo = 'F';
 					
+					String sexo = boxSexo.getSelectedItem().toString();
 					String dataNasc = txtDataNascimento.getText();
-					SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-					Calendar cal = Calendar.getInstance();
+					dependente = new Dependente(txtNome.getText(), sexo, 
+													dataNasc, funcionario, txtParentesco.getText());
 					
-					try {
-						cal.setTime(sdf.parse(dataNasc));
-						
-						if (dep != null) {
-							int id = dep.getId();
-							dep = new Dependente(id, txtNome.getText(), sexo, 
-									cal, funcionario, txtParentesco.getText());
-						} else {
-							dep = new Dependente(txtNome.getText(), sexo, 
-														cal, funcionario, txtParentesco.getText());
-						}
-						
-						dependenteJPADAO.beginTransaction();
-						dependenteJPADAO.save(dep);
-						dependenteJPADAO.commit();
-						JOptionPane.showMessageDialog(null, "Dependente Salvo");
-						dep = null;
-					} catch (ParseException e) {
-						JOptionPane.showMessageDialog(null, "Erros possiveis no campo data");
-						dependenteJPADAO.rollback();
-					}
+					dependenteDao.salvar(dependente);
+					JOptionPane.showMessageDialog(null, "Dependente Salvo");
+					
 				} else 
 					JOptionPane.showMessageDialog(null, "Funcionario não encontrado");
 				
-				dependenteJPADAO.close();
+				dependente = null;
 			}
 		});
 		
 		JButton btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				if (!list.isSelectionEmpty()) {
-					String nome = list.getSelectedValue();
-					
-					dep = dependenteJPADAO.findByName(nome);
-					
-					txtNome.setText(dep.getNome());
-					txtParentesco.setText(dep.getParentesco());
-					txtDataNascimento.setText(dep.getDate());
-					if (dep.getSexo() == 'M') {
-						boxSexo.setSelectedIndex(0);
-					} else
-						boxSexo.setSelectedIndex(1);
+				if (!listDependentes.isSelectionEmpty()) {
+					String nome = listDependentes.getSelectedValue();
+					dependente = dependenteDao.buscar(nome);
+					txtNome.setText(dependente.getNome());
+					txtParentesco.setText(dependente.getParentesco());
+					txtDataNascimento.setText(dependente.getDataNascimento());
+					boxSexo.setSelectedItem(dependente.getSexo());
 				} else
 					JOptionPane.showMessageDialog(null, "Selecione o Dependente a ser editado");
 				
@@ -223,13 +204,10 @@ public class DependenteView {
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				if (!list.isSelectionEmpty()) {
-					String nome = list.getSelectedValue();
-					Dependente dependente = dependenteJPADAO.findByName(nome);
-					dependenteJPADAO.beginTransaction();
-					dependenteJPADAO.delete(dependente.getId());
-					dependenteJPADAO.commit();
-					dependenteJPADAO.close();
+				if (!listDependentes.isSelectionEmpty()) {
+					String nome = listDependentes.getSelectedValue();
+					Dependente dependente = dependenteDao.buscar(nome);
+					dependenteDao.delete(dependente.getNome());
 					JOptionPane.showMessageDialog(null, "Dependente excluido");
 				} else
 					JOptionPane.showMessageDialog(null, "Selecione o Dependente a ser excluido");

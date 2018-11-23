@@ -1,10 +1,9 @@
 package br.ufc.persistencia.Entity;
 
 public class Dependente {
-private int id;
 	
 	private String nome;
-	private char sexo;
+	private String sexo;
 	private String dataNascimento;
 	private String parentesco;
 	
@@ -12,13 +11,9 @@ private int id;
 	
 	public Dependente() {}
 	
-	public Dependente(String nome, char sexo, String dataNascimento, Funcionario responsavel, String parentesco) {
-		this(0, nome, sexo, dataNascimento, responsavel, parentesco);
-	}
-	
-	public Dependente(int id, String nome, char sexo, String dataNascimento, 
+	public Dependente(String nome, String sexo, String dataNascimento, 
 								Funcionario responsavel, String parentesco){
-		this.id = id;
+	
 		this.nome = nome;
 		this.sexo = sexo;
 		this.dataNascimento = dataNascimento;
@@ -26,22 +21,16 @@ private int id;
 		this.parentesco = parentesco;
 	}
 	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public String getNome() {
 		return nome;
 	}
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	public char getSexo() {
+	public String getSexo() {
 		return sexo;
 	}
-	public void setSexo(char sexo) {
+	public void setSexo(String sexo) {
 		this.sexo = sexo;
 	}
 	

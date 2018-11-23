@@ -367,6 +367,7 @@ public class FuncionarioView {
 						funcDAO.salva(limpeza);
 					}
 					
+					JOptionPane.showMessageDialog(null, "Funcionario salvo com sucesso");
 				} catch (NumberFormatException e1) {
 					JOptionPane.showMessageDialog(null, "Erros possiveis no campo salario");
 					
