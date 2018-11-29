@@ -381,8 +381,8 @@ public class FuncionarioView {
 		JButton btnExcluir = new JButton("Excluir");
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (!txtNome.getText().equals("")){
-					funcDAO.delete(txtNome.getText());
+				if (!txtCpf.getText().equals("")){
+					funcDAO.delete(txtCpf.getText());
 					JOptionPane.showMessageDialog(null, "Funcionario excluido");
 				} else 
 					JOptionPane.showMessageDialog(null, "Preencha o campo CPF");

@@ -1,12 +1,16 @@
 package br.ufc.persistencia;
 
+import java.util.Set;
+
 import br.ufc.persistencia.util.RedisUtil;
 
 public class Principal {
 	public static void main(String[] args) {
 		RedisUtil.getJedis();
+		Set<String> keys = RedisUtil.getJedis().hkeys("funcionario:1234");
 		
-		System.out.println("Deu certo");
+		System.out.println(keys.toString());
+		
 		//Jedis jedis = new Jedis("localhost");
 //		jedis.set("foo", "bar");
 //		String value = jedis.get("foo");

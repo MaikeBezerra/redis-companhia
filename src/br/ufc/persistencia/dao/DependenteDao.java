@@ -60,9 +60,16 @@ public class DependenteDao {
 	
 	public void delete(String nome) {
 		if (busca(nome)) {
-			RedisUtil.getJedis().srem(DEPENDENTES, nome);
 			String responsavel = RedisUtil.getJedis().hget(DEPENDENTE + nome, "responsavel");
+			Set<String> atributos = RedisUtil.getJedis().hkeys(DEPENDENTE + nome);
+			
+			RedisUtil.getJedis().srem(DEPENDENTES, nome);
 			RedisUtil.getJedis().srem(FUNCIONARIO + responsavel + ":" + DEPENDENTES, nome);
+			
+			for (String atributo : atributos) {
+				RedisUtil.getJedis().hdel(DEPENDENTE + nome, atributo);
+			}
+			
 			RedisUtil.salvar();
 		}
 	}

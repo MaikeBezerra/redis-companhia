@@ -1,11 +1,15 @@
 package br.ufc.persistencia.Entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Projeto {
 	
 	private String nome;
 	private int periodo;
 	
 	private Departamento departamento;
+	private List<Pesquisador> pesquisadores;
 	
 	public Projeto(){}
 	
@@ -13,6 +17,7 @@ public class Projeto {
 		this.nome = nome;
 		this.periodo = periodo;
 		this.departamento = departamento;
+		setPesquisadores(new ArrayList<>());
 	}
 	
 	public String getNome() {
@@ -37,6 +42,14 @@ public class Projeto {
 	
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
+	}
+
+	public List<Pesquisador> getPesquisadores() {
+		return pesquisadores;
+	}
+
+	public void setPesquisadores(List<Pesquisador> pesquisadores) {
+		this.pesquisadores = pesquisadores;
 	}
 	
 }

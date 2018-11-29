@@ -97,6 +97,7 @@ public class DepartamentoView {
 				if (!txtNome.getText().equals("")) {
 					departamento = new Departamento(txtNome.getText());
 					depDAO.salva(departamento);
+					JOptionPane.showMessageDialog(null, "Departamento salvo com sucesso!");
 				} else {
 					JOptionPane.showMessageDialog(null, "Preencha o campo Nome");
 				}

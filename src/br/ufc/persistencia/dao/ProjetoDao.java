@@ -2,6 +2,7 @@ package br.ufc.persistencia.dao;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import br.ufc.persistencia.Entity.Departamento;
 import br.ufc.persistencia.Entity.Projeto;
@@ -11,6 +12,7 @@ public class ProjetoDao {
 	
 	public static final String DEPARTAMENTO = "departamento:";
 	public static final String PROJETO = "projeto:";
+	public static final String PESQUISADORES = "pesquisadores";
 	public static final String PROJETOS = "projetos";
 	public static final String NOME = "nome";
 	
@@ -41,6 +43,29 @@ public class ProjetoDao {
 			return projeto;
 		}
 		return null;
+	}
+	
+	public void addPesquisador(String projeto, String pesquisador) {
+		if (busca(projeto)) {
+			RedisUtil.getJedis().sadd(PROJETO + projeto + ":" + PESQUISADORES, pesquisador);
+		}
+	}
+	
+	public void removePesquisador(String projeto, String pesquisador) {
+		if (busca(projeto)) {
+			RedisUtil.getJedis().srem(PROJETO + projeto + ":" + PESQUISADORES, pesquisador);
+		}
+	}
+	
+	public String[] pesquisadores(String projeto) {
+		Set<String> pesquis = RedisUtil.getJedis().smembers(PROJETO + projeto + ":" + PESQUISADORES);
+		String pesquisadores[] = new String[pesquis.size()];
+		int cont = 0;
+		for (String pesquisador : pesquis) {
+			pesquisadores[cont] = pesquisador;
+			cont++;
+		}
+		return pesquisadores;
 	}
 	
 	public boolean busca(String nome) {
