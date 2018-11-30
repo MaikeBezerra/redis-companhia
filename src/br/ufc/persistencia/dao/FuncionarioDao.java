@@ -25,6 +25,7 @@ public class FuncionarioDao {
 		Map<String, String> atributos = new HashMap<>();
 		atributos.put("CPF", funcionario.getCpf());
 		atributos.put(NOME, funcionario.getNome());
+		atributos.put("endereco", funcionario.getEndereco());
 		atributos.put("sexo", funcionario.getSexo());
 		atributos.put("nascimento", funcionario.getDataNascimento());
 		atributos.put("tipo", funcionario.getTipo());
@@ -79,6 +80,7 @@ public class FuncionarioDao {
 			departamento = new Departamento();
 			funcionario.setCpf(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "CPF"));
 			funcionario.setNome(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, NOME));
+			funcionario.setEndereco(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "endereco"));
 			funcionario.setDataNascimento(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "nascimento"));
 			funcionario.setSexo(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "sexo"));
 			funcionario.setTipo(RedisUtil.getJedis().hget(FUNCIONARIO + cpf, "tipo"));

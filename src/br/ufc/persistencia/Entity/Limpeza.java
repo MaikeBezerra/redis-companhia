@@ -9,7 +9,7 @@ public class Limpeza extends Funcionario {
 	private Limpeza supervisor;
 	private List<Limpeza> supervisionados;
 	
-	public Limpeza(String cpf, String nome, Endereco endereco, String sexo, String dataNascimento, 
+	public Limpeza(String cpf, String nome, String endereco, String sexo, String dataNascimento, 
 			double salario, Departamento departamento,
 			String cargo, int jornada, Limpeza supervisor){
 		

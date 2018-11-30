@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import br.ufc.persistencia.Entity.Departamento;
-import br.ufc.persistencia.Entity.Endereco;
 import br.ufc.persistencia.Entity.Funcionario;
 import br.ufc.persistencia.Entity.Limpeza;
 import br.ufc.persistencia.Entity.Pesquisador;
@@ -38,9 +37,6 @@ public class FuncionarioView {
 	private JTextField txtCargo;
 	private JTextField txtJornada;
 	private JTextField txtCpf;
-	private JTextField txtNumero;
-	private JTextField txtBairro;
-	private JTextField txtCidade;
 
 	/**
 	 * Launch the application.
@@ -82,33 +78,33 @@ public class FuncionarioView {
 		//Frame
 		frmFuncionario = new JFrame();
 		frmFuncionario.setTitle("Funcionario");
-		frmFuncionario.setBounds(100, 100, 600, 530);
+		frmFuncionario.setBounds(100, 100, 600, 461);
 		frmFuncionario.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmFuncionario.getContentPane().setLayout(null);
 		
 		//Panels
 		JPanel pnlFuncionario = new JPanel();
-		pnlFuncionario.setBounds(33, 28, 512, 216);
+		pnlFuncionario.setBounds(33, 28, 512, 162);
 		frmFuncionario.getContentPane().add(pnlFuncionario);
 		pnlFuncionario.setLayout(null);
 		
 		JPanel pnlDepartamento = new JPanel();
-		pnlDepartamento.setBounds(211, 382, 293, 64);
+		pnlDepartamento.setBounds(250, 314, 293, 64);
 		frmFuncionario.getContentPane().add(pnlDepartamento);
 		pnlDepartamento.setLayout(null);
 		
 		JPanel pnlSecretario = new JPanel();
 		pnlSecretario.setLayout(null);
-		pnlSecretario.setBounds(33, 382, 162, 64);
+		pnlSecretario.setBounds(33, 314, 189, 64);
 		frmFuncionario.getContentPane().add(pnlSecretario);
 		
 		JPanel pnlLimpeza = new JPanel();
 		pnlLimpeza.setLayout(null);
-		pnlLimpeza.setBounds(211, 289, 293, 64);
+		pnlLimpeza.setBounds(252, 219, 293, 64);
 		frmFuncionario.getContentPane().add(pnlLimpeza);
 		
 		JPanel pnlPesquisador = new JPanel();
-		pnlPesquisador.setBounds(33, 289, 162, 64);
+		pnlPesquisador.setBounds(33, 219, 189, 64);
 		frmFuncionario.getContentPane().add(pnlPesquisador);
 		pnlPesquisador.setLayout(null);
 		
@@ -129,40 +125,24 @@ public class FuncionarioView {
 		lblEndereco.setBounds(12, 60, 70, 15);
 		pnlFuncionario.add(lblEndereco);
 		
-		JLabel lblNumero = new JLabel("Numero");
-		lblNumero.setBounds(439, 60, 58, 15);
-		pnlFuncionario.add(lblNumero);
-		
-		JLabel lblBairro = new JLabel("Bairro");
-		lblBairro.setBounds(12, 104, 70, 15);
-		pnlFuncionario.add(lblBairro);
-		
-		JLabel lblCidade = new JLabel("Cidade");
-		lblCidade.setBounds(319, 104, 70, 15);
-		pnlFuncionario.add(lblCidade);
-		
-		JLabel lblUF = new JLabel("UF");
-		lblUF.setBounds(442, 104, 32, 15);
-		pnlFuncionario.add(lblUF);
-		
 		JLabel lblSexo = new JLabel("Sexo");
-		lblSexo.setBounds(266, 150, 40, 15);
+		lblSexo.setBounds(266, 104, 40, 15);
 		pnlFuncionario.add(lblSexo);
 		
 		JLabel lblTipo = new JLabel("Tipo");
-		lblTipo.setBounds(326, 150, 40, 15);
+		lblTipo.setBounds(326, 104, 40, 15);
 		pnlFuncionario.add(lblTipo);
 		
 		JLabel lblSalario = new JLabel("Salario");
-		lblSalario.setBounds(155, 155, 70, 15);
+		lblSalario.setBounds(155, 109, 70, 15);
 		pnlFuncionario.add(lblSalario);
 		
 		JLabel lblDataNascimento = new JLabel("Data Nascimento");
-		lblDataNascimento.setBounds(12, 155, 147, 15);
+		lblDataNascimento.setBounds(12, 109, 147, 15);
 		pnlFuncionario.add(lblDataNascimento);
 		
 		JLabel lblPesquisador = new JLabel("Pesquisador");
-		lblPesquisador.setBounds(33, 272, 104, 15);
+		lblPesquisador.setBounds(33, 202, 104, 15);
 		frmFuncionario.getContentPane().add(lblPesquisador);
 		
 		JLabel lblArea = new JLabel("Area");
@@ -170,15 +150,15 @@ public class FuncionarioView {
 		pnlPesquisador.add(lblArea);
 		
 		JLabel lblSecretario = new JLabel("Secretario");
-		lblSecretario.setBounds(33, 365, 104, 15);
+		lblSecretario.setBounds(33, 295, 104, 15);
 		frmFuncionario.getContentPane().add(lblSecretario);		
 		
 		JLabel lblGrau = new JLabel("Grau");
-		lblGrau.setBounds(12, 12, 70, 15);
+		lblGrau.setBounds(12, 6, 70, 15);
 		pnlSecretario.add(lblGrau);
 		
 		JLabel lblDepartamento = new JLabel("Departamento");
-		lblDepartamento.setBounds(211, 365, 104, 15);
+		lblDepartamento.setBounds(250, 295, 104, 15);
 		frmFuncionario.getContentPane().add(lblDepartamento);
 		
 		JLabel lblNomeDep = new JLabel("Nome");
@@ -186,7 +166,7 @@ public class FuncionarioView {
 		pnlDepartamento.add(lblNomeDep);
 		
 		JLabel lblLimpeza = new JLabel("Limpeza");
-		lblLimpeza.setBounds(211, 272, 163, 15);
+		lblLimpeza.setBounds(252, 202, 163, 15);
 		frmFuncionario.getContentPane().add(lblLimpeza);		
 		
 		JLabel lblCargo = new JLabel("Cargo");
@@ -212,50 +192,24 @@ public class FuncionarioView {
 		
 		txtEndereco = new JTextField();
 		txtEndereco.addKeyListener(stringField);
-		txtEndereco.setBounds(12, 77, 415, 19);
+		txtEndereco.setBounds(12, 77, 485, 19);
 		pnlFuncionario.add(txtEndereco);
 		txtEndereco.setColumns(10);
 		
-		txtNumero = new JTextField();
-		txtNumero.addKeyListener(fieldInteger);
-		txtNumero.setBounds(439, 77, 61, 19);
-		pnlFuncionario.add(txtNumero);
-		txtNumero.setColumns(10);
-		
-		txtBairro = new JTextField();
-		txtBairro.addKeyListener(stringField);
-		txtBairro.setBounds(12, 119, 292, 19);
-		pnlFuncionario.add(txtBairro);
-		txtBairro.setColumns(10);
-		
-		txtCidade = new JTextField();
-		txtCidade.addKeyListener(stringField);
-		txtCidade.setBounds(316, 119, 114, 19);
-		pnlFuncionario.add(txtCidade);
-		txtCidade.setColumns(10);
-		
-		JComboBox<String> boxEstado = new JComboBox<String>();
-		boxEstado.setBounds(442, 119, 55, 24);
-		boxEstado.setModel(new DefaultComboBoxModel<String>(new String[] {"AC", "AL", "AP", "AM", "BA", "CE", "DF", 
-																		"ES", "GO", "MA", "MT", "MS", "MG", "PA", "PB", 
-																		"PR", "PE", "PI", "RJ", "RN", "RS", "RO", "RR", 
-																		"SC", "SP", "SE", "TO"}));
-		pnlFuncionario.add(boxEstado);
-		
 		txtDataNascimento = new JTextField();
-		txtDataNascimento.setBounds(12, 172, 129, 19);
+		txtDataNascimento.setBounds(12, 126, 129, 19);
 		pnlFuncionario.add(txtDataNascimento);
 		txtDataNascimento.setColumns(10);
 		
 		txtSalario = new JTextField();
-		txtSalario.setBounds(153, 172, 95, 19);
+		txtSalario.setBounds(153, 126, 95, 19);
 		pnlFuncionario.add(txtSalario);
 		txtSalario.addKeyListener(fieldDouble);
 		txtSalario.setColumns(10);
 		
 		//Boxes
 		JComboBox<String> boxSexo = new JComboBox<String>();
-		boxSexo.setBounds(266, 169, 51, 24);
+		boxSexo.setBounds(266, 123, 51, 24);
 		pnlFuncionario.add(boxSexo);
 		boxSexo.setModel(new DefaultComboBoxModel<String>(new String[] {"M", "F"}));
 		
@@ -265,7 +219,7 @@ public class FuncionarioView {
 		cmbBxDepartamento.setModel(new DefaultComboBoxModel<>(depDAO.departamentos()));
 		
 		JComboBox<String> boxFuncionario = new JComboBox<String>();
-		boxFuncionario.setBounds(329, 169, 168, 24);
+		boxFuncionario.setBounds(329, 123, 168, 24);
 		pnlFuncionario.add(boxFuncionario);
 		boxFuncionario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -332,20 +286,10 @@ public class FuncionarioView {
 					String grau = txtGrau.getText();
 					String area = txtArea.getText();
 					String dataNasc = txtDataNascimento.getText();
-					
-					//Campos do Endereco 
-					String rua = txtEndereco.getText();
-					int numero = Integer.parseInt(txtNumero.getText());
-					String bairro = txtBairro.getText();
-					String cidade = txtCidade.getText();
-					String estado = boxEstado.getSelectedItem().toString();
-					
+					String endereco = txtEndereco.getText();
 					String cpf = txtCpf.getText();
 					String nome = txtNome.getText();
 					String sexo = boxSexo.getSelectedItem().toString();
-					
-					//Criando o objeto Endereco
-					Endereco endereco = new Endereco(rua, numero, bairro, cidade, estado, null);
 					
 					int jornada = Integer.parseInt(txtJornada.getText());
 					double salario = Double.parseDouble(txtSalario.getText());
@@ -375,7 +319,7 @@ public class FuncionarioView {
 				
 			}
 		});
-		btnSalvar.setBounds(65, 458, 117, 25);
+		btnSalvar.setBounds(61, 390, 117, 25);
 		frmFuncionario.getContentPane().add(btnSalvar);		
 		
 		JButton btnExcluir = new JButton("Excluir");
@@ -388,7 +332,7 @@ public class FuncionarioView {
 					JOptionPane.showMessageDialog(null, "Preencha o campo CPF");
 			}
 		});
-		btnExcluir.setBounds(352, 458, 117, 25);
+		btnExcluir.setBounds(348, 390, 117, 25);
 		frmFuncionario.getContentPane().add(btnExcluir);
 		
 		JButton btnBuscar = new JButton("Buscar");
@@ -404,15 +348,8 @@ public class FuncionarioView {
 						txtCpf.setText("");
 					} else {
 						txtCpf.setText(funcionario.getCpf());
-						txtNome.setText(funcionario.getNome());
-						
-//						Endereco end = funcionario.getEndereco();
-//						txtEndereco.setText(end.getRua());
-//						txtNumero.setText(String.valueOf(end.getNumero()));
-//						txtBairro.setText(end.getBairro());
-//						txtCidade.setText(end.getCidade());
-//						boxEstado.setSelectedItem(end.getCidade());
-					
+						txtNome.setText(funcionario.getNome());						
+						txtEndereco.setText(funcionario.getEndereco());					
 						txtDataNascimento.setText(funcionario.getDataNascimento());							
 						txtSalario.setText(String.valueOf(funcionario.getSalario()));
 						boxSexo.setSelectedItem(funcionario.getSexo());
@@ -429,7 +366,7 @@ public class FuncionarioView {
 			
 			}
 		});
-		btnBuscar.setBounds(211, 458, 117, 25);
+		btnBuscar.setBounds(207, 390, 117, 25);
 		frmFuncionario.getContentPane().add(btnBuscar);
 	}
 	

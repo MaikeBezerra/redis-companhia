@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class Funcionario {
 	private String cpf;
 	private String nome;
-	private Endereco endereco;
+	private String endereco;
 	private String tipo;
 	private String sexo;
 	private String dataNascimento;
@@ -17,7 +17,7 @@ public abstract class Funcionario {
 	
 	public Funcionario() {}
 	
-	public Funcionario(String cpf, String nome, Endereco endereco, String sexo, String dataNascimento, 
+	public Funcionario(String cpf, String nome, String endereco, String sexo, String dataNascimento, 
 		double salario, String tipo, Departamento departamento){
 		this.cpf = cpf;
 		this.nome = nome;
@@ -40,11 +40,11 @@ public abstract class Funcionario {
 		this.nome = nome;
 	}
 	
-	public Endereco getEndereco() {
+	public String getEndereco() {
 		return endereco;
 	}
 	
-	public void setEndereco(Endereco endereco) {
+	public void setEndereco(String endereco) {
 		this.endereco = endereco;
 	}
 	

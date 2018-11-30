@@ -5,7 +5,7 @@ public class Secretario extends Funcionario {
 	private String grau;
 
 	
-	public Secretario(String cpf, String nome, Endereco endereco, String sexo, String dataNascimento, 
+	public Secretario(String cpf, String nome, String endereco, String sexo, String dataNascimento, 
 			double salario, Departamento departamento,
 			String grau){
 		
